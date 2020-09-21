@@ -17,16 +17,18 @@ cur_size = 0
 
 statinfo = os.stat(filename)
 
-print("Sending the file")
+print("File sending process started:")
 
 last_progress = 0
+#print(statinfo.st_size)
 while True:
     l = f.read(BUFFER_SIZE)
     cur_size += BUFFER_SIZE * 2
-    cur_progress = cur_size / statinfo.st_size * 100
+    #print(cur_size)
+    cur_progress = min(100, cur_size / statinfo.st_size * 100)
 
     if last_progress < cur_progress - 2:
-        print("Progress is " + str(int(cur_progress)) + "%")
+        print("Current progress is -----------------" + str(int(cur_progress)) + "%")
         last_progress = cur_progress
     if l:
         instance.send(l)
@@ -36,6 +38,6 @@ while True:
         instance.close()
         break
 
-print('Successfully send the file')
+print('File sent successfully')
 instance.close()
-print('Connection closed')
+print('Socket connection closed')
